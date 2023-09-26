@@ -21,17 +21,48 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function displayCurrentTime() {
-    const timeElement = document.getElementById("time");
+    const timeElement = document.querySelector('.time');
     const currentTime = new Date();
     const hours = currentTime.getHours();
     const minutes = currentTime.getMinutes();
-    const seconds = currentTime.getSeconds();
     const formattedTime = `${hours}:${minutes}`;
     timeElement.textContent = formattedTime;
 }
 setInterval(displayCurrentTime, 1000); // Обновляем время каждую секунду
 // Функция для получения города и страны пользователя
-function getUserLocation() {
+
+async function getWeatherByCity(cityName) {
+    try {
+        const apiKey = '102011b26e2de4198d214301d1c5b866'; // Вставьте ваш API-ключ для погоды
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`);
+        const data = await response.json();
+
+        if (data.cod === 200) {
+            const temperature = data.main.temp;
+            const description = data.weather[0].description;
+            const cityName = data.name;
+            const weatherIcon = data.weather[0].icon; // Получаем код иконки погоды
+
+            const weatherInfoElement = document.querySelector('.weather-info');
+            weatherInfoElement.textContent = `City: ${cityName}, Temperature: ${temperature}°C, Description: ${description}`;
+
+            // Обновляем элемент с классом "get_weather" для вывода погоды
+            const getWeatherElement = document.querySelector('.get_weather');
+            getWeatherElement.textContent = `Погода: City: ${cityName}, Temperature: ${temperature}°C, Description: ${description}`;
+
+            // Обновляем элемент с классом "weather-icon" для отображения иконки погоды
+            const weatherIconElement = document.querySelector('.weather-icon');
+            weatherIconElement.src = `https://openweathermap.org/img/w/${weatherIcon}.png`;
+            weatherIconElement.alt = `Погода: ${description}`;
+        } else {
+            console.log("Данные о погоде не найдены.");
+        }
+    } catch (error) {
+        console.error("Ошибка при получении данных о погоде:", error);
+    }
+}
+
+async function getUserLocation() {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(async function (position) {
             const latitude = position.coords.latitude;
@@ -46,8 +77,11 @@ function getUserLocation() {
                 if (data.results.length > 0) {
                     const city = data.results[0].components.city || data.results[0].components.town;
                     const country = data.results[0].components.country;
-                    const locationElement = document.getElementById("location");
-                    locationElement.textContent = `Город: ${city}, Страна: ${country}`;
+                    const locationElement = document.querySelector('.location');
+                    locationElement.textContent = `City: ${city}, Country: ${country}`;
+
+                    // Вызываем функцию для получения данных о погоде по городу
+                    getWeatherByCity(city);
                 } else {
                     console.log("Данные о местоположении не найдены.");
                 }
@@ -59,7 +93,6 @@ function getUserLocation() {
         console.log("Geolocation не поддерживается в вашем браузере.");
     }
 }
-
 // Вызываем функцию для получения города и страны пользователя
 
 

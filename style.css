@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: 'Manrope', sans-serif;
 }
 
 /* loader */
@@ -258,5 +259,27 @@ header .nav_bar {
 .location_and_weather {
     width: 100%;
     height: 300px;
-    background: #cccccc;
+
+}
+
+.location_and_weather>h4 {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 600;
+}
+
+.location_and_weather_container {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 24px;
+    border-bottom: 1px solid #7d7c7c;
+    border-top: 1px solid #7d7c7c;
+}
+
+.weather_info_container {
+    width: 100%;
+    height: 100px;
 }
