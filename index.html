@@ -33,12 +33,6 @@
                 club
             </h3>
         </div>
-        <div class="search">
-            <div class="search_container">
-                <input class="input_search" type="text" placeholder="Введите город...">
-                <button class="button_search" type="submit">Пойск</button>
-            </div>
-        </div>
         <div class="nav_bar">
             <div class="burger">
                 <span></span>
@@ -83,10 +77,26 @@
             <p class="location_and_weather_location"><span class="location"></span></p>
         </div>
         <div class="weather_info_container">
-            <p class="location">Местоположение: </p>
-            <p class="get_weather">Погода: <span class="weather-info"></span></p>
-            <img class="weather-icon" src="" alt="Погода">
+            <h4>Weather today</h4>
+            <div class="user_weather">
+                <div class="weather-info">
+
+                </div>
+            </div>
         </div>
+    </section>
+    <section class="find_weather_container">
+        <div class="find_weather">
+            <form class="search" onsubmit="getWeatherForecast(); return false;">
+                <div class="search_container">
+                    <input class="input_search" type="text" placeholder="Введите город...">
+                    <button class="button_search" type="submit">Поиск</button>
+                    <button class="button_clear" type="button" onclick="clearWeatherInfo()">✖</button>
+                </div>
+            </form>
+            <div class="find_weather_info"></div>
+        </div>
+        <div class="saved_find_weather"></div>
     </section>
     <script defer src="index.js"></script>
 </body>

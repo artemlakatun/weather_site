@@ -33,22 +33,34 @@ setInterval(displayCurrentTime, 1000); // Обновляем время кажд
 
 async function getWeatherByCity(cityName) {
     try {
-        const apiKey = '102011b26e2de4198d214301d1c5b866'; // Вставьте ваш API-ключ для погоды
+        const apiKey = '102011b26e2de4198d214301d1c5b866';
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`);
         const data = await response.json();
 
         if (data.cod === 200) {
             const temperature = data.main.temp;
             const description = data.weather[0].description;
-            const cityName = data.name;
             const weatherIcon = data.weather[0].icon; // Получаем код иконки погоды
+            const windSpeed = data.wind.speed; // Получаем скорость ветра
 
             const weatherInfoElement = document.querySelector('.weather-info');
-            weatherInfoElement.textContent = `City: ${cityName}, Temperature: ${temperature}°C, Description: ${description}`;
-
-            // Обновляем элемент с классом "get_weather" для вывода погоды
-            const getWeatherElement = document.querySelector('.get_weather');
-            getWeatherElement.textContent = `Погода: City: ${cityName}, Temperature: ${temperature}°C, Description: ${description}`;
+            weatherInfoElement.innerHTML = `
+                <div class="weather-line">
+                    <span class="temperature">Temperature:</span> ${temperature}°C
+                </div>
+                <div class="weather-line">
+                    <span class="description">Description:</span> ${description}
+                </div>
+                <div class="weather-line">
+                    <span class="wind_speed">Wind Speed:</span> ${windSpeed} m/s
+                </div>
+                <div class="weather-line">
+                    <span class="date">Date:</span> ${getCurrentDate()}
+                </div>
+                <div class="weather-line">
+                <img class="weather-icon" src="" alt="Погода">
+                </div>
+            `;
 
             // Обновляем элемент с классом "weather-icon" для отображения иконки погоды
             const weatherIconElement = document.querySelector('.weather-icon');
@@ -62,6 +74,12 @@ async function getWeatherByCity(cityName) {
     }
 }
 
+function getCurrentDate() {
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return currentDate.toLocaleDateString('en-US', options);
+}
+
 async function getUserLocation() {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(async function (position) {
@@ -69,8 +87,7 @@ async function getUserLocation() {
             const longitude = position.coords.longitude;
 
             try {
-                // Выполняем обратное геокодирование с использованием OpenCage Geocoding API
-                const apiKey = '77184f11a0c84b4a882273944f3c1e07'; // Замените на свой API ключ
+                const apiKey = '77184f11a0c84b4a882273944f3c1e07';
                 const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?key=${apiKey}&q=${latitude}+${longitude}&language=en&pretty=1`);
                 const data = await response.json();
 
@@ -100,3 +117,148 @@ async function getUserLocation() {
 
 // Вызываем функции для получения местоположения и отображения времени
 getUserLocation();
+
+
+
+let isWeatherCleared = false; // Флаг для отслеживания очистки погоды
+
+async function getWeatherForecast() {
+    const apiKey = '102011b26e2de4198d214301d1c5b866';
+    const city = document.querySelector('.input_search').value;
+
+    // Если флаг isWeatherCleared установлен в true и строка поиска пустая, просто выходим
+    if (isWeatherCleared && city === '') {
+        return;
+    }
+
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (response.status === 200) {
+            const forecast = data.list;
+            const findWeatherInfo = document.querySelector('.find_weather_info');
+            findWeatherInfo.innerHTML = '';
+
+            for (let i = 0; i < 5; i++) { // Отображаем прогноз на 5 дней
+                const day = forecast[i * 8]; // Получаем данные для каждого следующего дня (каждые 8 записей)
+
+                const infoDiv = document.createElement('div');
+                infoDiv.classList.add('info');
+                infoDiv.innerHTML = `
+                    <h2>${getDayOfWeekAndDate(day.dt)}</h2>
+                    <p>Temperature: ${day.main.temp}°C</p>
+                    <p>Description: ${day.weather[0].description}</p>
+                    <p>Wind Speed: ${day.wind.speed} m/s</p>
+                `;
+
+                const iconUrl = `https://openweathermap.org/img/w/${day.weather[0].icon}.png`;
+                const iconImg = document.createElement('img');
+                iconImg.src = iconUrl;
+                iconImg.alt = day.weather[0].description;
+
+                infoDiv.appendChild(iconImg); // Помещаем иконку внутрь карточки
+                findWeatherInfo.appendChild(infoDiv);
+            }
+
+            // Сброс флага isWeatherCleared при успешном получении погоды
+            isWeatherCleared = false;
+
+            // Добавляем город в список сохраненных городов
+            saveCity(city);
+        } else {
+            console.log('Данные о погоде не найдены.');
+        }
+    } catch (error) {
+        console.error('Ошибка при получении данных о погоде:', error);
+    }
+}
+
+function getDayOfWeekAndDate(unixTimestamp) {
+    const date = new Date(unixTimestamp * 1000);
+    const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const dayOfMonth = date.getDate();
+    return `${dayOfWeek}, ${dayOfMonth}`;
+}
+
+function clearWeatherInfo() {
+    const inputSearch = document.querySelector('.input_search');
+    const findWeatherInfo = document.querySelector('.find_weather_info');
+
+    if (inputSearch.value === '' && !isWeatherCleared) {
+        // Если строка поиска пустая и погода не была очищена ранее, устанавливаем флаг
+        isWeatherCleared = true;
+    }
+
+    inputSearch.value = ''; // Очищаем строку поиска
+    findWeatherInfo.innerHTML = ''; // Убираем информацию о погоде
+}
+
+// Функция для сохранения города в Local Storage
+function saveCity(city) {
+    let savedCities = JSON.parse(localStorage.getItem('savedCities')) || [];
+
+    // Проверяем, чтобы город не дублировался
+    if (!savedCities.includes(city)) {
+        savedCities.push(city);
+
+        // Ограничиваем количество сохраненных городов до 10
+        if (savedCities.length > 10) {
+            savedCities = savedCities.slice(-10);
+        }
+
+        localStorage.setItem('savedCities', JSON.stringify(savedCities));
+        loadSavedCities();
+    }
+}
+
+// Функция для загрузки сохраненных городов из Local Storage
+function loadSavedCities() {
+    const savedCities = JSON.parse(localStorage.getItem('savedCities')) || [];
+    const savedFindWeather = document.querySelector('.saved_find_weather');
+
+    savedFindWeather.innerHTML = ''; // Очищаем список сохраненных городов
+
+    savedCities.forEach((city) => {
+        const savedCityDiv = document.createElement('div');
+        savedCityDiv.classList.add('saved_city');
+
+        // Создаем кнопку удаления города
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('delete_button');
+        deleteButton.innerHTML = 'Удалить';
+
+        savedCityDiv.textContent = city;
+
+        // Добавляем обработчик события для удаления города
+        deleteButton.addEventListener('click', (event) => {
+            event.stopPropagation(); // Остановить всплытие события, чтобы не вызывался click на родительском элементе
+            deleteCity(city);
+            loadSavedCities();
+        });
+
+        savedCityDiv.appendChild(deleteButton);
+        savedCityDiv.addEventListener('click', () => {
+            document.querySelector('.input_search').value = city; // Заполняем строку поиска
+            getWeatherForecast(); // Вызываем функцию получения погоды
+        });
+
+        savedFindWeather.appendChild(savedCityDiv);
+    });
+}
+
+// Функция для удаления города из сохраненных
+function deleteCity(city) {
+    let savedCities = JSON.parse(localStorage.getItem('savedCities')) || [];
+
+    if (savedCities.includes(city)) {
+        savedCities = savedCities.filter((savedCity) => savedCity !== city);
+        localStorage.setItem('savedCities', JSON.stringify(savedCities));
+    }
+}
+
+// Вызываем функцию загрузки сохраненных городов при загрузке страницы
+window.addEventListener('load', loadSavedCities);
