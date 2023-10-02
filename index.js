@@ -20,6 +20,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 0);
 });
 
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Находим кнопку по её классу
+    const checkWeatherButton = document.querySelector('.check_weather_button');
+
+    // Находим блок, к которому хотим прокрутить страницу
+    const findWeatherContainer = document.querySelector('.find_weather_container');
+
+    // Добавляем обработчик события для кнопки
+    checkWeatherButton.addEventListener('click', function() {
+        // Используем метод scrollIntoView для плавной прокрутки к блоку
+        findWeatherContainer.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
 function displayCurrentTime() {
     const timeElement = document.querySelector('.time');
     const currentTime = new Date();
@@ -152,6 +168,7 @@ async function getWeatherForecast() {
                     <p>Temperature: ${day.main.temp}°C</p>
                     <p>Description: ${day.weather[0].description}</p>
                     <p>Wind Speed: ${day.wind.speed} m/s</p>
+                    <p>Precipitation Probability: ${day.pop * 100}%</p> <!-- Вероятность осадков -->
                 `;
 
                 const iconUrl = `https://openweathermap.org/img/w/${day.weather[0].icon}.png`;
@@ -216,11 +233,14 @@ function saveCity(city) {
 }
 
 // Функция для загрузки сохраненных городов из Local Storage
+// Функция для загрузки сохраненных городов из Local Storage
 function loadSavedCities() {
     const savedCities = JSON.parse(localStorage.getItem('savedCities')) || [];
     const savedFindWeather = document.querySelector('.saved_find_weather');
 
     savedFindWeather.innerHTML = ''; // Очищаем список сохраненных городов
+
+
 
     savedCities.forEach((city) => {
         const savedCityDiv = document.createElement('div');
@@ -248,6 +268,13 @@ function loadSavedCities() {
 
         savedFindWeather.appendChild(savedCityDiv);
     });
+
+    // Устанавливаем минимальную высоту блока saved_find_weather
+    if (savedCities.length === 0) {
+        savedFindWeather.style.minHeight = '200px';
+    } else {
+        savedFindWeather.style.minHeight = 'auto';
+    }
 }
 
 // Функция для удаления города из сохраненных
@@ -262,3 +289,25 @@ function deleteCity(city) {
 
 // Вызываем функцию загрузки сохраненных городов при загрузке страницы
 window.addEventListener('load', loadSavedCities);
+
+// Получаем элементы
+const findWeatherContainer = document.querySelector('.find_weather_container');
+const findWeatherInfo = document.querySelector('.find_weather_info');
+
+// Функция для автоматического скрытия/отображения блока find_weather_info
+function toggleFindWeatherInfo() {
+    if (findWeatherInfo.children.length === 0) {
+        // Если внутри findWeatherInfo нет дочерних элементов, скрываем его
+        findWeatherInfo.style.display = 'none';
+        findWeatherContainer.style.maxHeight = '200px'; // Уменьшаем максимальную высоту
+    } else {
+        // Иначе отображаем блок findWeatherInfo
+        findWeatherInfo.style.display = 'flex';
+        findWeatherContainer.style.maxHeight = '700px'; // Восстанавливаем максимальную высоту
+    }
+}
+
+// Вызываем toggleFindWeatherInfo() при загрузке страницы и при каждом изменении в блоке findWeatherInfo
+window.addEventListener('DOMContentLoaded', toggleFindWeatherInfo);
+findWeatherInfo.addEventListener('DOMSubtreeModified', toggleFindWeatherInfo);
+
