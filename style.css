@@ -308,12 +308,12 @@ header .nav_bar {
 .find_weather_container {
     width: 100%;
     height: 700px;
-    background: #cccccc;
 }
 
 .find_weather {
     width: 100%;
     height: 500px;
+    border-bottom: 1px solid #7d7c7c;
 }
 
 .search {
@@ -359,7 +359,6 @@ header .nav_bar {
     width: 100%;
     height: 400px;
     padding-top: 20px;
-    background: chartreuse;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -369,13 +368,64 @@ header .nav_bar {
     width: 250px;
     min-width: 250px;
     height: 250px;
-    background: #cccccc;
     margin: 20px;
+    text-align: center;
+    border: 1px solid #7d7c7c;
+    border-radius: 5px;
 }
 
 .saved_find_weather {
     width: 100%;
     height: 200px;
-    background: aqua;
+    border-bottom: 1px solid #7d7c7c;
 }
 
+.saved_city {
+    font-size: 24px;
+    margin: 0 20px 20px 20px;
+}
+
+.delete_button {
+    width: 100px;
+    height: 30px;
+    margin-left: 20px;
+    background: red;
+    border: 1px solid gray;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete_button:hover {
+    background: #B22222;
+}
+
+.search button:active {
+    background-color: #8B0000;
+}
+
+/* footer */
+
+.footer {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footerElements {
+    margin: 17px;
+    text-align: center;
+    display: flex;
+}
+
+.elem {
+    color: black;
+    margin-left: 5px;
+    font-size: 22px;
+}
+
+.elem:hover {
+    color: gray;
+}
