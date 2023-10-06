@@ -21,13 +21,20 @@
 </head>
 <body>
     <div class="loader">
-        <div class="logo">
-            <h1>THE WEATHER CLUB</h1>
+
+        <div class="logo_loader">
+            <h2>THE WEATHER CLUB</h2>
+        </div>
+        <div class="loading">
+            <div class="loading_text"><span>loading, please wait...</span></div>
+            <div class="loading_animation"></div>
         </div>
     </div>
+
     <header>
+
         <div class="logo_header">
-            <h3>
+            <h3 class="logo_h3">
                 the<br>
                 weather<br>
                 club
@@ -38,16 +45,16 @@
                 <span></span>
             </div>
             <ul class="nav_menu">
-                <li><a class="link" href="#price">aaaaa</a></li>
-                <li><a class="link" href="#price">aaaaa</a></li>
-                <li><a class="link" href="#price">aaaaa</a></li>
-                <li><a class="link" href="#price">aaaaa</a></li>
-                <li><a class="link" href="#price">aaaaa</a></li>
-
+                <li><a class="link" href="#">user location</a></li>
+                <li><a class="link" href="#">search weather</a></li>
+                <li><a class="link" href="#">our equipment</a></li>
+                <li><a class="link" href="#">aaaaa</a></li>
             </ul>
+
         </div>
     </header>
     <section class="welcome_content">
+
         <div class="welcome_preview">
             <span class="span_welcome_logo_font span1">
                 THE
@@ -69,8 +76,10 @@
             </span>
             <button class="check_weather_button" onclick=""><i class='bx bx-chevron-down'></i></button>
         </div>
+
     </section>
     <section class="location_and_weather">
+
         <h4>User Location and Time</h4>
         <div class="location_and_weather_container">
             <p class="location_and_weather_time">Your time: <span class="time"></span></p>
@@ -84,8 +93,10 @@
                 </div>
             </div>
         </div>
+
     </section>
     <section class="find_weather_container">
+
         <div class="find_weather">
             <form class="search" onsubmit="getWeatherForecast(); return false;">
                 <div class="search_container">
@@ -99,13 +110,56 @@
             <div class="find_weather_info"></div>
             <div class="saved_find_weather"></div>
         </div>
+
+    </section>
+    <section class="equipment">
+
+        <h4>Our equipment</h4>
+        <div class="photo_equipment photo1"><img class="equipment_img" src="img/img5.jfif" alt="photo"></div>
+        <div class="photo_equipment photo2"><img class="equipment_img" src="img/img4.jfif" alt="photo"></div>
+        <div class="text_equipment">
+            <span>
+                From a fundamental point of view, weather is a dynamic system in which small inaccuracies in the initial conditions can lead to large inaccuracies
+                in the output. This is called the “butterfly effect”: the flapping of a butterfly’s wings in Tokyo will lead to a hurricane in New York, and if you don’t
+                take this flapping into account, you may miss the hurricane.
+                The taxonomy of global climate change is very complex: there is no single trend, be it global warming or global cooling.
+                When this summer turns out to be hotter than the previous one, or even when several years in a row are unusually hot, this is rather a random process.
+                There are projects where people summarize point observations from weather stations and, based on this data, find out which summer was the hottest or
+                which winter was the coldest on planet Earth. And some local peaks, such as the hottest day in the entire history of meteorological observations in
+                Moscow, are just coincidences. If you determine the hottest day, then you need to analyze meteorological observations not for 50, but for 500 years:
+                only such a scale allows us to talk about climate change.
+            </span>
+        </div>
     </section>
     <section class="photo">
-        <div class="image-frame">
-            <img class="image" src="img/leto.jpg" alt="Ваше изображение">
+
+        <div class="carousel-container">
+            <div class="carousel">
+                <div class="slide">
+                    <img src="img/img1.webp" alt="Слайд 1">
+                    <div class="slide-text">PLAN</div>
+                </div>
+                <div class="slide">
+                    <img src="img/img2.webp" alt="Слайд 2">
+                    <div class="slide-text">YOUR</div>
+                </div>
+                <div class="slide">
+                    <img src="img/img3.webp" alt="Слайд 3">
+                    <div class="slide-text">DAY!</div>
+                </div>
+            </div>
+            <div class="carousel-indicator"></div>
+        </div>
+
+    </section>
+    <section class="contact">
+        <h5>Our contacts</h5>
+        <div class="contact_container">
+
         </div>
     </section>
     <footer class="footer">
+
         <div class="footerElements">
             <span>
                 THE<br>
@@ -120,9 +174,11 @@
             <span>+375 (44) 751-75-11</span>
             <a class="elem" href="https://t.me/artem_lakatun"><i class='bx bxl-telegram'></i></a>
             <a class="elem" href="https://github.com/artemlakatun"><i class='bx bxl-github'></i></a>
-            <a class="elem"href="https://www.instagram.com/artem_lakatun/"><i class='bx bxl-instagram' ></i></a>
+            <a class="elem" href="https://www.instagram.com/artem_lakatun/"><i class='bx bxl-instagram' ></i></a>
         </div>
+
     </footer>
+
     <script defer src="index.js"></script>
 </body>
 </html>

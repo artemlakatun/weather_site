@@ -13,7 +13,8 @@ body {
     width: 100%;
     height: 100%;
     background-color: black;
-    display: flex;
+    display: grid;
+    grid-template-rows: 3fr 1fr;
     justify-content: center;
     align-items: center;
     z-index: 9999;
@@ -22,7 +23,7 @@ body {
     opacity: 1;
 }
 
-.logo {
+.logo_loader {
     font-family: 'Black Ops One', cursive;
     font-size: 32px;
     font-weight: 100;
@@ -30,6 +31,38 @@ body {
     margin-right: auto;
     color: white;
     text-align: center;
+}
+
+.logo_loader>h2 {
+    font-size: 72px;
+}
+
+.loading {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.loading_text {
+    width: 100%;
+    height: 100px;
+    color: white;
+    font-family: 'Black Ops One', cursive;
+    font-size: 24px;
+}
+
+.loading_animation {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #fff;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.logo_h3 {
+    font-size: 21px;
 }
 
 @keyframes fadeOut {
@@ -106,6 +139,7 @@ header .nav_bar {
 
 .nav_menu > li {
     padding-right: 22px;
+    min-width: 128px;
 }
 
 .link {
@@ -206,6 +240,14 @@ header .nav_bar {
     border: 1px solid #7d7c7c;
     cursor: pointer;
     border-radius: 5px;
+}
+
+.check_weather_button:hover {
+    background: #D0D0D0;
+}
+
+.check_weather_button:active {
+    background: #C0C0C0;
 }
 
 .bx {
@@ -388,6 +430,7 @@ header .nav_bar {
     align-items: center;
     flex-wrap: wrap;
     border-top: 1px solid #7d7c7c;
+    border-bottom: 1px solid #7d7c7c;
 }
 
 .saved_city {
@@ -421,6 +464,153 @@ header .nav_bar {
     font-size: 18px;
 }
 
+/* equipment */
+
+.equipment {
+    width: 100%;
+    height: 800px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+}
+
+.equipment>h4 {
+    margin: 0;
+    font-size: 42px;
+    font-weight: 600;
+    grid-column: 3/4;
+}
+
+.photo_equipment {
+    width: 60%;
+    min-width: 400px;
+    height: 250px;
+    border: 1px solid #7d7c7c;
+    border-radius: 5px;
+}
+
+.photo1 {
+    grid-column: 2/4;
+    grid-row: 2/4;
+    margin: 0;
+}
+
+.equipment_img {
+    width: 100%;
+    height: 100%;
+}
+
+.photo2 {
+    grid-column: 2/4;
+    grid-row: 5/7;
+    margin: 0;
+}
+
+.text_equipment {
+    font-size: 18px;
+    width: 60%;
+    min-width: 400px;
+    height: 500px;
+    grid-row: 2/7;
+    grid-column: 4/6;
+    margin: 50px;
+    border: 1px solid #7d7c7c;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+}
+
+/* photo */
+
+.photo {
+    width: 100%;
+    height: 800px;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.carousel-container {
+    width: 98%;
+    height: 96%;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.carousel {
+    height: 95%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.slide {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active-slide {
+    opacity: 1;
+    transition: opacity 1s ease-in-out; /* Добавляем анимацию для активного слайда */
+}
+
+.slide img {
+    width: 100%;
+    height: 730px;
+}
+
+.slide-text {
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+    text-align: left;
+    padding: 5px;
+    color: white;
+    font-size: 65px;
+    font-weight: 600;
+    margin-left: 50px;
+}
+
+.carousel-indicator {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.indicator-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #888;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.indicator-dot.active {
+    background-color: #333;
+}
+
+/* contact */
+
+.contact {
+    width: 100%;
+    height: 700px;
+    background: aqua;
+}
+
+.contact>h5 {
+    font-size:32px;
+    text-align: center;
+}
+
 /* footer */
 
 .footer {
@@ -446,57 +636,4 @@ header .nav_bar {
 
 .elem:hover {
     color: gray;
-}
-
-/* photo */
-
-.photo {
-    width: 100%;
-    height: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #cccccc;
-}
-
-.image-frame {
-    position: relative;
-    width: 100%; /* Ширина рамки */
-    height: 600px; /* Высота рамки */
-    background-color: #fff; /* Цвет рамки */
-    border: 5px solid #000; /* Ширина и цвет границы */
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3); /* Тень */
-    overflow: hidden;
-}
-
-/* Добавляем треугольники снизу слева и сверху справа */
-.image-frame::before,
-.image-frame::after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-}
-
-/* Треугольник снизу слева */
-.image-frame::before {
-    border-width: 150px 0 0 150px;
-    border-color: transparent transparent transparent #000;
-    bottom: 0;
-    left: 0;
-}
-
-/* Треугольник сверху справа */
-.image-frame::after {
-    top: 0;
-    right: 0;
-    border-width: 0 150px 150px 0;
-    border-color: transparent #000 transparent transparent;
-}
-
-.image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }

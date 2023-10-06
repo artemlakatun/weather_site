@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    setTimeout(() => {
+    window.addEventListener("load", function () {
         const loader = document.querySelector('.loader');
         loader.style.animation = "none"; // Отменяем анимацию loader
 
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const welcomePreviewText = document.querySelector('.welcome_preview');
             welcomePreviewText.style.animation = "slideInUp 0.5s forwards";
         }, 600); // Половина времени анимации loader (600 миллисекунд из 1200)
-    }, 0);
+    });
 });
 
 
@@ -27,12 +27,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const checkWeatherButton = document.querySelector('.check_weather_button');
 
     // Находим блок, к которому хотим прокрутить страницу
-    const findWeatherContainer = document.querySelector('.find_weather_container');
+    const userWeather = document.querySelector('.user_weather');
 
     // Добавляем обработчик события для кнопки
     checkWeatherButton.addEventListener('click', function() {
         // Используем метод scrollIntoView для плавной прокрутки к блоку
-        findWeatherContainer.scrollIntoView({ behavior: 'smooth' });
+        userWeather.scrollIntoView({ behavior: 'smooth' });
     });
 });
 
@@ -41,8 +41,7 @@ function displayCurrentTime() {
     const currentTime = new Date();
     const hours = currentTime.getHours();
     const minutes = currentTime.getMinutes();
-    const formattedTime = `${hours}:${minutes}`;
-    timeElement.textContent = formattedTime;
+    timeElement.textContent = `${hours}:${minutes}`;
 }
 setInterval(displayCurrentTime, 1000); // Обновляем время каждую секунду
 // Функция для получения города и страны пользователя
@@ -164,7 +163,7 @@ async function getWeatherForecast() {
                 const infoDiv = document.createElement('div');
                 infoDiv.classList.add('info');
                 infoDiv.innerHTML = `
-                    <h2>${getDayOfWeekAndDate(day.dt)}</h2>
+                    <h3>${getDayOfWeekAndDate(day.dt)}</h3>
                     <p>Temperature: ${day.main.temp}°C</p>
                     <p>Description: ${day.weather[0].description}</p>
                     <p>Wind Speed: ${day.wind.speed} m/s</p>
@@ -311,3 +310,51 @@ function toggleFindWeatherInfo() {
 window.addEventListener('DOMContentLoaded', toggleFindWeatherInfo);
 findWeatherInfo.addEventListener('DOMSubtreeModified', toggleFindWeatherInfo);
 
+document.addEventListener("DOMContentLoaded", function () {
+    const slides = document.querySelectorAll(".slide");
+    const indicator = document.querySelector(".carousel-indicator");
+    const dots = [];
+
+    let currentIndex = 0;
+
+    function updateIndicator() {
+        dots.forEach((dot, index) => {
+            if (index === currentIndex) {
+                dot.classList.add("active");
+            } else {
+                dot.classList.remove("active");
+            }
+        });
+    }
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            if (i === index) {
+                slide.classList.add("active-slide");
+            } else {
+                slide.classList.remove("active-slide");
+            }
+        });
+        currentIndex = index;
+        updateIndicator();
+    }
+
+    slides.forEach((slide, index) => {
+        const dot = document.createElement("div");
+        dot.classList.add("indicator-dot");
+        dot.addEventListener("click", () => {
+            showSlide(index);
+        });
+        indicator.appendChild(dot);
+        dots.push(dot);
+    });
+
+    function nextSlide() {
+        const nextIndex = (currentIndex + 1) % slides.length;
+        showSlide(nextIndex);
+    }
+
+    setInterval(nextSlide, 3000); // Автоматическое перелистывание каждые 3 секунды
+
+    showSlide(currentIndex); // Показать первый слайд по умолчанию
+});
