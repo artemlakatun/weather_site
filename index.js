@@ -1,3 +1,4 @@
+// логика для loader
 document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("load", function () {
         const loader = document.querySelector('.loader');
@@ -20,22 +21,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
-
+// при нажатии на кнопку в главном меню ссылаемся на пойск
 document.addEventListener("DOMContentLoaded", function() {
-    // Находим кнопку по её классу
     const checkWeatherButton = document.querySelector('.check_weather_button');
-
-    // Находим блок, к которому хотим прокрутить страницу
     const userWeather = document.querySelector('.user_weather');
 
-    // Добавляем обработчик события для кнопки
     checkWeatherButton.addEventListener('click', function() {
-        // Используем метод scrollIntoView для плавной прокрутки к блоку
         userWeather.scrollIntoView({ behavior: 'smooth' });
     });
 });
 
+//функция определения времени
 function displayCurrentTime() {
     const timeElement = document.querySelector('.time');
     const currentTime = new Date();
@@ -43,12 +39,12 @@ function displayCurrentTime() {
     const minutes = currentTime.getMinutes();
     timeElement.textContent = `${hours}:${minutes}`;
 }
-setInterval(displayCurrentTime, 1000); // Обновляем время каждую секунду
-// Функция для получения города и страны пользователя
+setInterval(displayCurrentTime, 1000);
 
+// Функция для получения города и страны пользователя
 async function getWeatherByCity(cityName) {
     try {
-        const apiKey = '102011b26e2de4198d214301d1c5b866';
+        const apiKey = '922e0d82e8fdfd6a5824cf5186795b62';
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`);
         const data = await response.json();
 
@@ -82,19 +78,22 @@ async function getWeatherByCity(cityName) {
             weatherIconElement.src = `https://openweathermap.org/img/w/${weatherIcon}.png`;
             weatherIconElement.alt = `Погода: ${description}`;
         } else {
-            console.log("Данные о погоде не найдены.");
+            const weatherInfoElement = document.querySelector('.weather-info');
+            weatherInfoElement.textContent = "Sorry, the weather in your city was not found, try again later!";
         }
     } catch (error) {
         console.error("Ошибка при получении данных о погоде:", error);
     }
 }
 
+// функция которая получает дату
 function getCurrentDate() {
     const currentDate = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return currentDate.toLocaleDateString('en-US', options);
 }
 
+// функция которая получает местоположение
 async function getUserLocation() {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(async function (position) {
@@ -113,7 +112,7 @@ async function getUserLocation() {
                     locationElement.textContent = `City: ${city}, Country: ${country}`;
 
                     // Вызываем функцию для получения данных о погоде по городу
-                    getWeatherByCity(city);
+                    await getWeatherByCity(city);
                 } else {
                     console.log("Данные о местоположении не найдены.");
                 }
@@ -125,18 +124,10 @@ async function getUserLocation() {
         console.log("Geolocation не поддерживается в вашем браузере.");
     }
 }
-// Вызываем функцию для получения города и страны пользователя
-
-
-// Функция для отображения текущего времени
-
-// Вызываем функции для получения местоположения и отображения времени
 getUserLocation();
 
-
-
+// функция для получения погоды
 let isWeatherCleared = false; // Флаг для отслеживания очистки погоды
-
 async function getWeatherForecast() {
     const apiKey = '102011b26e2de4198d214301d1c5b866';
     const city = document.querySelector('.input_search').value;
@@ -192,6 +183,7 @@ async function getWeatherForecast() {
     }
 }
 
+// усовершенствование функции выше(получает сегодняшний день недели)
 function getDayOfWeekAndDate(unixTimestamp) {
     const date = new Date(unixTimestamp * 1000);
     const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
@@ -200,6 +192,7 @@ function getDayOfWeekAndDate(unixTimestamp) {
     return `${dayOfWeek}, ${dayOfMonth}`;
 }
 
+// функция которая чистит строку пойска и убирает блочки с погодой
 function clearWeatherInfo() {
     const inputSearch = document.querySelector('.input_search');
     const findWeatherInfo = document.querySelector('.find_weather_info');
@@ -208,9 +201,8 @@ function clearWeatherInfo() {
         // Если строка поиска пустая и погода не была очищена ранее, устанавливаем флаг
         isWeatherCleared = true;
     }
-
-    inputSearch.value = ''; // Очищаем строку поиска
-    findWeatherInfo.innerHTML = ''; // Убираем информацию о погоде
+    inputSearch.value = '';
+    findWeatherInfo.innerHTML = '';
 }
 
 // Функция для сохранения города в Local Storage
@@ -220,32 +212,25 @@ function saveCity(city) {
     // Проверяем, чтобы город не дублировался
     if (!savedCities.includes(city)) {
         savedCities.push(city);
-
-        // Ограничиваем количество сохраненных городов до 10
         if (savedCities.length > 10) {
             savedCities = savedCities.slice(-10);
         }
-
         localStorage.setItem('savedCities', JSON.stringify(savedCities));
         loadSavedCities();
     }
 }
 
-// Функция для загрузки сохраненных городов из Local Storage
+
 // Функция для загрузки сохраненных городов из Local Storage
 function loadSavedCities() {
     const savedCities = JSON.parse(localStorage.getItem('savedCities')) || [];
     const savedFindWeather = document.querySelector('.saved_find_weather');
 
-    savedFindWeather.innerHTML = ''; // Очищаем список сохраненных городов
-
-
-
+    savedFindWeather.innerHTML = '';
     savedCities.forEach((city) => {
         const savedCityDiv = document.createElement('div');
         savedCityDiv.classList.add('saved_city');
 
-        // Создаем кнопку удаления города
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete_button');
         deleteButton.innerHTML = 'Удалить';
@@ -254,7 +239,7 @@ function loadSavedCities() {
 
         // Добавляем обработчик события для удаления города
         deleteButton.addEventListener('click', (event) => {
-            event.stopPropagation(); // Остановить всплытие события, чтобы не вызывался click на родительском элементе
+            event.stopPropagation();
             deleteCity(city);
             loadSavedCities();
         });
@@ -264,10 +249,8 @@ function loadSavedCities() {
             document.querySelector('.input_search').value = city; // Заполняем строку поиска
             getWeatherForecast(); // Вызываем функцию получения погоды
         });
-
         savedFindWeather.appendChild(savedCityDiv);
     });
-
     // Устанавливаем минимальную высоту блока saved_find_weather
     if (savedCities.length === 0) {
         savedFindWeather.style.minHeight = '200px';
@@ -295,6 +278,7 @@ const findWeatherInfo = document.querySelector('.find_weather_info');
 
 // Функция для автоматического скрытия/отображения блока find_weather_info
 function toggleFindWeatherInfo() {
+
     if (findWeatherInfo.children.length === 0) {
         // Если внутри findWeatherInfo нет дочерних элементов, скрываем его
         findWeatherInfo.style.display = 'none';
@@ -302,7 +286,7 @@ function toggleFindWeatherInfo() {
     } else {
         // Иначе отображаем блок findWeatherInfo
         findWeatherInfo.style.display = 'flex';
-        findWeatherContainer.style.maxHeight = '700px'; // Восстанавливаем максимальную высоту
+        findWeatherContainer.style.maxHeight = '905px'; // Восстанавливаем максимальную высоту
     }
 }
 
@@ -327,6 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    //функция для карусели
     function showSlide(index) {
         slides.forEach((slide, i) => {
             if (i === index) {
@@ -358,3 +343,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     showSlide(currentIndex); // Показать первый слайд по умолчанию
 });
+
+//плавный якорь навигации
+const anchors = document.querySelectorAll('a[href*="#"]')
+
+for(let anchor of anchors) {
+    anchor.addEventListener("click", function (e) {
+        event.preventDefault();
+        const blockID = anchor.getAttribute('href')
+        document.querySelector('' + blockID).scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        })
+    })
+}

@@ -45,10 +45,10 @@
                 <span></span>
             </div>
             <ul class="nav_menu">
-                <li><a class="link" href="#">user location</a></li>
-                <li><a class="link" href="#">search weather</a></li>
-                <li><a class="link" href="#">our equipment</a></li>
-                <li><a class="link" href="#">aaaaa</a></li>
+                <li><a class="link" href="#user_location">user location</a></li>
+                <li><a class="link" href="#search_weather">search weather</a></li>
+                <li><a class="link" href="#our_equipment">our equipment</a></li>
+                <li><a class="link" href="#our_contacts">contacts</a></li>
             </ul>
 
         </div>
@@ -70,7 +70,7 @@
                 TODAY
             </span>
         </div>
-        <div class="check_weather">
+        <div class="check_weather" id="user_location">
             <span>
                 Let's check the weather!
             </span>
@@ -88,7 +88,7 @@
         <div class="weather_info_container">
             <h4>Weather today</h4>
             <div class="user_weather">
-                <div class="weather-info">
+                <div class="weather-info" id="search_weather">
 
                 </div>
             </div>
@@ -100,7 +100,9 @@
         <div class="find_weather">
             <form class="search" onsubmit="getWeatherForecast(); return false;">
                 <div class="search_container">
-                    <input class="input_search" type="text" placeholder="Введите город...">
+                    <label>
+                        <input class="input_search" type="text" placeholder="Введите город...">
+                    </label>
                     <button class="button_search" type="submit">Поиск</button>
                     <button class="button_clear" type="button" onclick="clearWeatherInfo()">✖</button>
                 </div>
@@ -108,7 +110,7 @@
         </div>
         <div class="info_container">
             <div class="find_weather_info"></div>
-            <div class="saved_find_weather"></div>
+            <div class="saved_find_weather" id="our_equipment"></div>
         </div>
 
     </section>
@@ -152,11 +154,40 @@
         </div>
 
     </section>
-    <section class="contact">
+    <section class="contact" id="our_contacts">
+
         <h5>Our contacts</h5>
         <div class="contact_container">
-
+            <div class="employees">
+                <h5>Our employees:</h5>
+                <p>
+                    Director: Ivanov Ivan Ivanovich<br>
+                    Number: +375(44)000-00-00
+                </p>
+                <p>
+                    Deputy director: Alexandrov Alexander Alexandrovich<br>
+                    Number: +375(29)000-00-00
+                </p>
+                <p>
+                    Human Resources Department: Stasevich Irina Ivanovna<br>
+                    Number: +375(33)000-00-00
+                </p>
+                <p>
+                    Accounting: Melnicova Valerya Alexandrovna<br>
+                    Number: +375(44)000-00-00
+                </p>
+            </div>
+            <div class="addresses">
+                <h5>Addresses:</h5>
+                <p>Minsk: Pushkina str. 6</p>
+                <p>Brest: Assanalieva str. 34</p>
+                <p>Mogilev: Adincova str. 14</p>
+                <p>Gomel: Lidskaya str. 112</p>
+                <p>Grodno: Hovaya str. 71</p>
+                <p>Vitebsk: Vasilkovaya str. 221</p>
+            </div>
         </div>
+
     </section>
     <footer class="footer">
 
