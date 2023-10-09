@@ -115,20 +115,34 @@ header .logo_header>h3 {
 }
 
 header .nav_bar {
-    width: 60%;
-    min-width: 350px;
+    width: 600px;
     height: 60px;
     justify-self: center;
+    align-items: center;
 }
 
 .burger {
     display: none; /* Изначально скрываем бургер-меню */
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.burger .bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: grey;
+    margin: 5px 0;
+    transition: all 0.3s ease;
 }
 
 .burger span {
     display: block;
-    width: 100%;
-    height: 4px;
+    width: 25px;
+    height: 3px;
+    margin: 5px 0;
+    background-color: black;
     transition: all 0.3s ease;
 }
 
@@ -199,9 +213,6 @@ header .nav_bar {
 .span_welcome_logo_font {
     font-family: 'Rubik', sans-serif;
     font-size: 150px;
-}
-
-.span_welcome_logo_padding {
 }
 
 .span2 {
@@ -628,9 +639,10 @@ header .nav_bar {
 }
 
 .employees {
-    min-width: 250px;
+    width: 300px;
     height: 320px;
     padding: 0;
+    text-align: left;
 }
 
 .employees>h5 {
@@ -644,9 +656,9 @@ header .nav_bar {
 }
 
 .addresses {
-    min-width: 340px;
+    width: 300px;
     height: 320px;
-    text-align: right;
+    text-align: left;
 }
 
 .addresses>h5 {
@@ -946,18 +958,85 @@ header .nav_bar {
 }
 
 @media screen and (max-width: 768px) {
+
+    /* burger */
+
+    .burger {
+        display: block;
+        margin-left: 160px;
+    }
+
+    /* Отображаем/скрываем бургер-меню и анимируем его в крестик */
+    .burger.active .bar:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    .burger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .burger.active .bar:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .nav_menu.active {
+        display: block;
+    }
+
+    .menu_container {
+        width: 50%;
+        height: 500px;
+        position: fixed;
+        top: 0;
+        left: -101%;
+        transition: transform 0.5s ease;
+        z-index: 101;
+        align-items: center;
+        border: 1px solid #7d7c7c;
+        border-radius: 3px;
+        background: white;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 102;
+    }
+
+    header .nav_bar {
+        width: 31px;
+        height: 31px;
+    }
+    .nav_menu {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 130px;
+    }
+
+    .nav_menu>li {
+        margin: 10px 0 10px 0;
+    }
+
     /* welcome_content */
 
     .span_welcome_logo_font {
-        font-size: 95px;
+        font-size: 80px;
     }
 
     .span3 {
-        font-size: 16px;
+        font-size: 13px;
+    }
+
+    .span4 {
+        margin-left: 10px;
     }
 
     .check_weather {
-        width: 40%;
+        width: 62%;
     }
 
     /* location_and_weather*/
@@ -967,11 +1046,11 @@ header .nav_bar {
     }
 
     .location_and_weather_container {
-        font-size: 19px;
+        font-size: 15px;
     }
 
     .user_weather {
-        font-size: 19px;
+        font-size: 15px;
     }
 
     .saved_find_weather {
@@ -983,6 +1062,14 @@ header .nav_bar {
         min-width: 205px;
         height: 257px;
         font-size: 13px;
+    }
+
+    /* find_weather */
+    .info {
+        width: 130px;
+        min-width: 130px;
+        font-size: 11px;
+        margin: 5px;
     }
 
     /* photo */
@@ -1005,9 +1092,28 @@ header .nav_bar {
 
     /* equipment */
 
+    .equipment {
+        height: 1070px;
+    }
+
+    .photo1 {
+        grid-column: 3/5;
+    }
+
+    .photo2 {
+        grid-column: 3/5;
+        grid-row: 7/8;
+    }
+
     .text_equipment {
-        min-width: 290px;
-        margin: 70px 0 0 0;
+        grid-column: 3/5;
+        grid-row: 4/7;
+    }
+
+    .text_equipment {
+        width: 290px;
+        margin: 30px 0 0 0;
+        font-size: 13px;
     }
 
     .photo_equipment {
@@ -1015,11 +1121,21 @@ header .nav_bar {
         height: 210px;
     }
 
-    /* find_weather */
-    .info {
-        width: 130px;
-        min-width: 130px;
-        font-size: 11px;
-        margin: 5px;
+    /* contact */
+
+    .contact {
+        height: 660px;
+    }
+
+    .contact_container {
+        height: 555px;
+    }
+
+    .employees {
+        height: 250px;
+    }
+
+    .addresses {
+        height: 250px;
     }
 }

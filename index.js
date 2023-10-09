@@ -21,6 +21,82 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+//burger menu
+const menuContainer = document.createElement('div');
+const body = document.body;
+const html = document.documentElement;
+const overlay = document.querySelector('.overlay');
+const burger = document.querySelector('.burger');
+const navLinks = document.querySelectorAll('.nav_menu .link');
+
+menuContainer.className = 'menu_container';
+document.body.appendChild(menuContainer);
+
+// Перемещаем меню в созданный контейнер
+const navMenu = document.querySelector('.nav_menu');
+
+// Устанавливаем начальное состояние блока
+menuContainer.style.transform = 'translateX(-50%)';
+
+document.querySelector('.burger').addEventListener('click', function () {
+    this.classList.toggle('active');
+    menuContainer.classList.toggle('active');
+
+    if (menuContainer.classList.contains('active')) {
+        menuContainer.appendChild(navMenu);
+        menuContainer.style.transform = 'translateX(200%)';
+        navMenu.style.display = 'flex';
+        disableScroll();
+        showOverlay()
+    } else {
+        menuContainer.removeChild(navMenu);
+        menuContainer.style.transform = 'translateX(-200%)';
+        enableScroll()
+        hideOverlay()
+        event.preventDefault();
+    }
+});
+
+function disableScroll() {
+    body.style.overflow = 'hidden';
+    html.style.overflow = 'hidden';
+}
+
+function enableScroll() {
+    body.style.overflow = 'auto';
+    html.style.overflow = 'auto';
+}
+
+function showOverlay() {
+    overlay.style.display = 'block';
+}
+
+function hideOverlay() {
+    overlay.style.display = 'none';
+}
+
+// Закрываем меню при клике на ссылку внутри меню
+navLinks.forEach(function (link) {
+    link.addEventListener('click', function (event) {
+        event.preventDefault();
+        burger.classList.remove('active');
+        menuContainer.classList.remove('active');
+        menuContainer.style.transform = 'translateX(-100%)';
+        hideOverlay();
+        enableScroll();
+    });
+});
+
+// Закрываем меню при выборе ссылки
+document.querySelectorAll('.nav_menu .link').forEach(function (link) {
+    link.addEventListener('click', function () {
+        document.querySelector('.burger').classList.remove('active');
+        menuContainer.classList.remove('active');
+        menuContainer.style.transform = 'translateX(-100%)'; // Скрываем блок
+    });
+});
+
+
 // при нажатии на кнопку в главном меню ссылаемся на пойск
 document.addEventListener("DOMContentLoaded", function() {
     const checkWeatherButton = document.querySelector('.check_weather_button');
